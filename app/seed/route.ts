@@ -5,6 +5,9 @@ const sql = postgres(process.env.POSTGRES_URL!);
 
 async function seedChecklist() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await sql`DROP TABLE IF EXISTS checklist_steps`;
+  await sql`DROP TABLE IF EXISTS checklist`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS checklist (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -14,7 +17,7 @@ async function seedChecklist() {
 
   await sql`
     CREATE TABLE IF NOT EXISTS checklist_steps (
-      id VARCHAR(36) PRIMARY KEY,
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       description TEXT NOT NULL,
       planned_cost INT NOT NULL,
@@ -22,7 +25,10 @@ async function seedChecklist() {
       contractor_accepted BOOLEAN NOT NULL,
       customer_accepted BOOLEAN,
       image_url VARCHAR(255),
+      docs_url VARCHAR(255),
       checklist_id UUID NOT NULL,
+      start_date VARCHAR(255),
+      end_date VARCHAR(255),
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (checklist_id) REFERENCES checklist(id)
     );

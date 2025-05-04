@@ -6,7 +6,6 @@ const sql = postgres(process.env.POSTGRES_URL!);
 export async function fetchChecklistById(
   checklistId: string
 ): Promise<ChecklistCard> {
-  console.log("checklistId", checklistId);
   try {
     const checklist = await sql<Checklist[]>`
       SELECT 
@@ -26,6 +25,22 @@ export async function fetchChecklistById(
       ...checklist[0],
       steps: checklistSteps,
     };
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch checklist.");
+  }
+}
+
+export async function fetchChecklistList(): Promise<Checklist[]> {
+  try {
+    const checklists = await sql<Checklist[]>`
+      SELECT 
+        id, 
+        name 
+      FROM checklist
+    `;
+
+    return checklists;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch checklist.");

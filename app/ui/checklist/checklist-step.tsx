@@ -40,6 +40,27 @@ export const ChecklistStep = ({
               Итоговые затраты: <b>{formatCurrency(step.final_cost)}</b>
             </p>
           )}
+          {(step.start_date || step.end_date) && (
+            <p className="text-sm">
+              Даты проведения:{" "}
+              {step.start_date
+                ? new Date(step.start_date).toLocaleDateString()
+                : "-"}
+              /
+              {step.end_date
+                ? new Date(step.end_date).toLocaleDateString()
+                : "-"}
+            </p>
+          )}
+          {step.docs_url && (
+            <a
+              className="text-sm underline"
+              target="_blank"
+              href={step.docs_url}
+            >
+              Просмотреть приложенный документ.
+            </a>
+          )}
         </div>
         <div className="flex gap-4">
           <button

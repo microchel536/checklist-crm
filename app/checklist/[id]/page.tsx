@@ -14,8 +14,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     await updateChecklistStep(id, state);
   };
 
-  console.log(checklist);
-
   return (
     <div>
       <h1 className={"mb-8 text-xl md:text-2xl"}>{checklist.name}</h1>
