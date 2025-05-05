@@ -55,75 +55,75 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 
 
 // chernovik
-interface ProductRow {
-  priceId: string;
-  quantityId: string;
-}
-
-const createProductRow = (index: number): ProductRow => {
-  const rowDiv = document.createElement("div");
-  rowDiv.classList.add("product-row");
-
-  const priceLabel = document.createElement("label");
-  priceLabel.textContent = `Цена (${index + 1}):`;
-
-  const priceInput = document.createElement("input");
-  priceInput.type = "number";
-  priceInput.placeholder = "Укажите цену";
-  priceInput.id = `price-${index}`;
-
-  const quantityLabel = document.createElement("label");
-  quantityLabel.textContent = `Количество (${index + 1}):`;
-
-  const quantityInput = document.createElement("input");
-  quantityInput.type = "number";
-  quantityInput.placeholder = "Укажите количество";
-  quantityInput.id = `quantity-${index}`;
-
-  rowDiv.append(priceLabel, priceInput, quantityLabel, quantityInput);
-
-  document.querySelector("#container")?.append(rowDiv);
-
-  return {
-    priceId: priceInput.id,
-    quantityId: quantityInput.id,
-  };
-};
-
-const calculateTotalPrice = () => {
-  const rows = Array.from(
-    document.querySelectorAll(".product-row")
-  ).map((rowEl) => ({
-    price: parseFloat(rowEl.querySelector(`#${rowEl.children[1].id}`)?.value || ""),
-    quantity: parseFloat(rowEl.querySelector(`#${rowEl.children[3].id}`)?.value || "")
-  }));
-
-  const totalSum = rows.reduce((acc, row) => acc + (row.price * row.quantity), 0);
-
-  document.querySelector("#result")?.innerText = `${totalSum.toFixed(2)} руб.`;
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-  const addButton = document.createElement("button");
-  addButton.textContent = "+ Добавить услугу";
-  addButton.onclick = () => createProductRow(document.querySelectorAll(".product-row").length);
-
-  const calcButton = document.createElement("button");
-  calcButton.textContent = "Рассчитать стоимость";
-  calcButton.onclick = calculateTotalPrice;
-
-  const resultSpan = document.createElement("span");
-  resultSpan.id = "result";
-
-  const mainContainer = document.createElement("div");
-  mainContainer.id = "container";
-
-  // Инициализируем первые три товара
-  for (let i = 0; i < 3; i++) {
-    createProductRow(i);
-  }
-
-  mainContainer.append(addButton, calcButton, resultSpan);
-
-  document.body.append(mainContainer);
-});
+//interface ProductRow {
+//  priceId: string;
+//  quantityId: string;
+//}
+//
+//const createProductRow = (index: number): ProductRow => {
+//  const rowDiv = document.createElement("div");
+//  rowDiv.classList.add("product-row");
+//
+//  const priceLabel = document.createElement("label");
+//  priceLabel.textContent = `Цена (${index + 1}):`;
+//
+//  const priceInput = document.createElement("input");
+//  priceInput.type = "number";
+//  priceInput.placeholder = "Укажите цену";
+//  priceInput.id = `price-${index}`;
+//
+//  const quantityLabel = document.createElement("label");
+//  quantityLabel.textContent = `Количество (${index + 1}):`;
+//
+//  const quantityInput = document.createElement("input");
+//  quantityInput.type = "number";
+//  quantityInput.placeholder = "Укажите количество";
+//  quantityInput.id = `quantity-${index}`;
+//
+//  rowDiv.append(priceLabel, priceInput, quantityLabel, quantityInput);
+//
+//  document.querySelector("#container")?.append(rowDiv);
+//
+//  return {
+//    priceId: priceInput.id,
+//    quantityId: quantityInput.id,
+//  };
+//};
+//
+//const calculateTotalPrice = () => {
+//  const rows = Array.from(
+//    document.querySelectorAll(".product-row")
+//  ).map((rowEl) => ({
+//    price: parseFloat(rowEl.querySelector(`#${rowEl.children[1].id}`)?.value || ""),
+//    quantity: parseFloat(rowEl.querySelector(`#${rowEl.children[3].id}`)?.value || "")
+//  }));
+//
+//  const totalSum = rows.reduce((acc, row) => acc + (row.price * row.quantity), 0);
+//
+//  document.querySelector("#result")?.innerText = `${totalSum.toFixed(2)} руб.`;
+//};
+//
+//document.addEventListener("DOMContentLoaded", () => {
+//  const addButton = document.createElement("button");
+//  addButton.textContent = "+ Добавить услугу";
+//  addButton.onclick = () => createProductRow(document.querySelectorAll(".product-row").length);
+//
+//  const calcButton = document.createElement("button");
+//  calcButton.textContent = "Рассчитать стоимость";
+//  calcButton.onclick = calculateTotalPrice;
+//
+//  const resultSpan = document.createElement("span");
+//  resultSpan.id = "result";
+//
+//  const mainContainer = document.createElement("div");
+//  mainContainer.id = "container";
+//
+//  // Инициализируем первые три товара
+//  for (let i = 0; i < 3; i++) {
+//    createProductRow(i);
+//  }
+//
+//  mainContainer.append(addButton, calcButton, resultSpan);
+//
+//  document.body.append(mainContainer);
+//});
