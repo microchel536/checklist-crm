@@ -10,7 +10,6 @@ import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
 
 
 
-
       interface Item {
   price: number | string,
   quantity: number | string
