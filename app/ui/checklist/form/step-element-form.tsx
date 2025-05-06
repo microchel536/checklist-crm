@@ -74,6 +74,40 @@ export default function StepElementForm({
       </div>
 
       <div className="mb-4">
+        <label htmlFor="image_url" className="mb-2 block text-sm font-medium">
+          Количество
+        </label>
+        <div className="relative mt-2 rounded-md">
+          <div className="relative">
+            <input
+              id="kolvo"
+              name="kolvo"
+              value={step.kolvo}
+              onChange={handleValueChanged}
+              className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="image_url" className="mb-2 block text-sm font-medium">
+          Цена
+        </label>
+        <div className="relative mt-2 rounded-md">
+          <div className="relative">
+            <input
+              id="price"
+              name="price"
+              value={step.price}
+              onChange={handleValueChanged}
+              className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-4">
         <label
           htmlFor="planned_cost"
           className="mb-2 block text-sm font-medium"
