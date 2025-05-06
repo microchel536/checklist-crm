@@ -6,7 +6,7 @@ import Image from "next/image";
 import { formatCurrency } from "@/app/lib/utils";
 import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
 import { InputPairType } from "@/app//lib/constants"; // Импортируем интерфейс
-import { formatNumber } from "@/app//lib/utils"; // Используем вспомогательную функцию
+
 
 
 
