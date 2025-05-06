@@ -1,4 +1,5 @@
 import { NewChecklistStep } from "./definitions";
+import { InputPairType } from "./definitions";
 
 export const INITIAL_STEP: NewChecklistStep = {
   name: "Мой этап",
@@ -11,7 +12,6 @@ export const INITIAL_STEP: NewChecklistStep = {
   docs_url: null,
   image_url: null,
 };
-
 
 export const INITIAL_INPUT_PAIR: InputPairType = {
   price: 0,
