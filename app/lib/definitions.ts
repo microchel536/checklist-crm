@@ -7,13 +7,6 @@ export type Checklist = {
   id: string;
   name: string;
 };
-export interface InputPairType {
-  price: number;
-  quantity: number;
-}
-
-// Определение типа финальной стоимости
-export type FinalCostType = number | null;
 
 
 export type ChecklistStep = {
