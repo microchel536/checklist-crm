@@ -1,5 +1,5 @@
 import { NewChecklistStep } from "./definitions";
-import { InputPairType } from "./definitions";
+
 
 export const INITIAL_STEP: NewChecklistStep = {
   name: "Мой этап",
