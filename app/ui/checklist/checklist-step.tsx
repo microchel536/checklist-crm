@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react"; //было import React from "react";
+import React from "react"; 
 import clsx from "clsx";
 import Image from "next/image";
 import { formatCurrency } from "@/app/lib/utils";
 import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
-import { InputPairType } from "@/app//lib/constants"; // Импортируем интерфейс
+
 
 
 
