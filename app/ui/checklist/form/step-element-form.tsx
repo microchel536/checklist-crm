@@ -84,6 +84,7 @@ export default function StepElementForm({
               name="kolvo"
               value={step.kolvo}
               onChange={handleValueChanged}
+              step="1000"
               className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
             />
           </div>
@@ -101,6 +102,7 @@ export default function StepElementForm({
               name="price"
               value={step.price}
               onChange={handleValueChanged}
+              step="1000"
               className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
             />
           </div>
