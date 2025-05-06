@@ -1,10 +1,5 @@
 
-export const formatCurrency = (amount: number) => {
-  return amount.toLocaleString("ru-RU", {
-    style: "currency",
-    currency: "RUB",
-  });
-};
+
 export const addNewPair = () => {
     setInputPairs((prevPairs) => [
       ...prevPairs,
