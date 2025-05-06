@@ -75,7 +75,17 @@ export default function StepElementForm({
         </div>
       </div>
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const Home = () => {
+    return (
+        <div className="container mx-auto my-8">
+        <MultipleInputForm /> {./app/ui/checklist/form/MultipleInputForm.tsx}
+      </div>
+    );
+  };
 
+  export default Home;      
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
       
       <div className="mb-4">
