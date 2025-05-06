@@ -9,6 +9,93 @@ import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
 
 
 
+
+
+      interface Item {
+  price: number | string,
+  quantity: number | string
+}
+
+const App = () => {
+  const [items, setItems] = React.useState<Item[]>([]);
+  
+  // Добавляем новую пару цена-количество
+  const addItem = () => {
+    setItems([...items, {price: '', quantity: ''}]);
+  };
+
+  // Удаляем последнюю добавленную пару
+  const removeLastItem = () => {
+    if(items.length > 0){
+      setItems(items.slice(0, items.length - 1));
+    }
+  };
+
+  // Расчет общей стоимости
+  const calculateTotalCost = () => {
+    let total = 0;
+    
+    for(const item of items){
+      const parsedPrice = parseFloat(item.price);
+      const parsedQuantity = parseFloat(item.quantity);
+      
+      if(!isNaN(parsedPrice) && !isNaN(parsedQuantity)){
+        total += parsedPrice * parsedQuantity;
+      }
+    }
+    
+    return total.toFixed(2); // округляем итоговую сумму до двух знаков после запятой
+  };
+
+  return (
+    <div style={{display: 'flex', flexDirection: 'column'}}>
+      {/* Кнопки добавления/удаления пар */}
+      <button onClick={addItem}>Добавить</button>
+      <button disabled={items.length === 0} onClick={removeLastItem}>Удалить</button>
+
+      {/* Поля ввода цены и количества */}
+      {items.map((item, index) => (
+        <React.Fragment key={index}>
+          <input type="number"
+                 step="any"
+                 placeholder={`Цена ${index+1}`}
+                 value={item.price}
+                 onChange={(event) => {
+                   const newItems = [...items];
+                   newItems[index].price = event.target.value;
+                   setItems(newItems);
+                 }}
+          />
+          
+          <input type="number"
+                 step="any"
+                 placeholder={`Количество ${index+1}`}
+                 value={item.quantity}
+                 onChange={(event) => {
+                   const newItems = [...items];
+                   newItems[index].quantity = event.target.value;
+                   setItems(newItems);
+                 }}
+          />
+        </React.Fragment>
+      ))}
+
+      {/* Кнопка расчета суммы */}
+      <button onClick={() => alert(`Общая сумма: ${calculateTotalCost()}`)}>
+        Рассчитать стоимость
+      </button>
+    </div>
+  );
+};
+
+export default App;
+
+
+
+
+
+
+
 export const ChecklistStep = ({
   step,
   idx,
