@@ -1,3 +1,8 @@
+// Форматирование числа
+export function formatNumber(num: string): string {
+  return num.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+}
+
 export const formatCurrency = (amount: number) => {
   return amount.toLocaleString("ru-RU", {
     style: "currency",
