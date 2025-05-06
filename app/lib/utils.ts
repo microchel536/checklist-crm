@@ -12,7 +12,7 @@ export const formatCurrency = (amount: number) => {
 export const addNewPair = () => {
     setInputPairs((prevPairs) => [
       ...prevPairs,
-      { price: 0, kolvo: 0 }
+      { price: 0, quantity: 0 }
   ]);
 };
 export const formatDateToLocal = (
