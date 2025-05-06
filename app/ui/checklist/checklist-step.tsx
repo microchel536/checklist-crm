@@ -9,39 +9,6 @@ import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
 
 
 
-
-const App = () => {
-  // Локальная инициализация констант внутри компонента
-  const INITIAL_INPUT_PAIR: InputPairType = {
-    price: 0,
-    quantity: 0
-  };
-
-  const INITIAL_PAIRS: InputPairType[] = [
-    { price: 0, quantity: 0 },
-    { price: 0, quantity: 0 }
-  ];
-
-  const [inputPairs, setInputPairs] = useState<InputPairType[]>(INITIAL_PAIRS);
-
-  const addNewPair = () => {
-    setInputPairs((prevPairs) => [...prevPairs, INITIAL_INPUT_PAIR]);
-  };
-
-  // Остальные функции оставляем прежними...
-
-  return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      {/* Рендеринг формы */}
-    </div>
-  );
-};
-
-export default App;
-
-
-
-
 export const ChecklistStep = ({
   step,
   idx,
