@@ -1,5 +1,5 @@
 // Форматирование числа
-export function formatNumber(num: string): string {
+export const formatNumber(num: string): string {
   return num.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
 }
 
