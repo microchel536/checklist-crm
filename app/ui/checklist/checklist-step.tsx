@@ -5,9 +5,6 @@ import clsx from "clsx";
 import Image from "next/image";
 import { formatCurrency } from "@/app/lib/utils";
 import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
-
-
-import React, { useState } from 'react';
 import { InputPairType } from '../definitions/types'; // Импортируем интерфейс
 import { formatNumber } from '../utils/helpers'; // Используем вспомогательную функцию
 
