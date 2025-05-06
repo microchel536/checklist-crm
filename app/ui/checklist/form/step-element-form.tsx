@@ -5,7 +5,7 @@ import { CheckIcon, ClockIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { NewChecklistStep } from "@/app/lib/definitions";
 import { ChangeEvent } from "react";
 import DatePicker from "react-datepicker";
-import MultipleInputForm from "@/app/ui/checklist/form/MultipleInputForm";
+import MultipleInputForm from "./app/ui/checklist/form/MultipleInputForm";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -80,7 +80,7 @@ export default function StepElementForm({
 const YourPage = () => {
   return (
     <div className="container mx-auto my-8">
-      <MultipleInputForm /> {@/app/ui/checklist/form/MultipleInputForm}
+      <MultipleInputForm /> {./app/ui/checklist/form/MultipleInputForm}
     </div>
   );
 };
