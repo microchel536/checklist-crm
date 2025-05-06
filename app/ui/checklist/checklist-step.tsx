@@ -16,7 +16,7 @@ const App = () => {
   };
 
   const handleChange = (index: number, fieldName: 'price' | 'quantity', value: string) => {
-    let parsedValue = parseFloat(value);
+    const parsedValue = parseFloat(value);
     if (!isNaN(parsedValue)) {
       setInputPairs(prevPairs =>
         prevPairs.map((pair, i) =>
