@@ -75,18 +75,7 @@ export default function StepElementForm({
         </div>
       </div>
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-const YourPage = () => {
-  return (
-    <div className="container mx-auto my-8">
-      <MultipleInputForm /> {./app/ui/checklist/form/MultipleInputForm}
-    </div>
-  );
-};
-
-export default YourPage;
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
       
       <div className="mb-4">
