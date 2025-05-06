@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react"; //было import React from "react";
 import clsx from "clsx";
 import Image from "next/image";
 import { formatCurrency } from "@/app/lib/utils";
 import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
 import { InputPairType } from "@/app//lib/definitions"; // Импортируем интерфейс
 import { formatNumber } from "@/app//lib/utils"; // Используем вспомогательную функцию
-import React, { useState } from "react";
+
 
 
 const App = () => {
