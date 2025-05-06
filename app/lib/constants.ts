@@ -13,13 +13,4 @@ export const INITIAL_STEP: NewChecklistStep = {
   image_url: null,
 };
 
-export const INITIAL_INPUT_PAIR: InputPairType = {
-  price: 0,
-  quantity: 0
-};
 
-// Первоначальные данные
-export const INITIAL_PAIRS: InputPairType[] = [
-  { price: 0, quantity: 0 },
-  { price: 0, quantity: 0 }
-];
