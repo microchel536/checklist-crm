@@ -5,8 +5,8 @@ import clsx from "clsx";
 import Image from "next/image";
 import { formatCurrency } from "@/app/lib/utils";
 import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
-import { InputPairType } from '../definitions/types'; // Импортируем интерфейс
-import { formatNumber } from '../utils/helpers'; // Используем вспомогательную функцию
+import { InputPairType } from "@/app//lib/definitions"; // Импортируем интерфейс
+import { formatNumber } from "@/app//lib/utils"; // Используем вспомогательную функцию
 
 const App = () => {
   const [inputPairs, setInputPairs] = useState<InputPairType[]>(INITIAL_PAIRS);
