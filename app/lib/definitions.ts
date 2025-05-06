@@ -14,8 +14,10 @@ export type ChecklistStep = {
   name: string;
   description: string;
   planned_cost: number;
-  kolvo: number;
-  price: number;
+  InputPair = {
+    price: number,
+    kolvo: number
+};
   final_cost: number | null;
   start_date: string | null;
   end_date: string | null;
