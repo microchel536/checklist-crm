@@ -6,6 +6,57 @@ import Image from "next/image";
 import { formatCurrency } from "@/app/lib/utils";
 import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
 
+
+import React, { useState } from 'react';
+import { InputPairType } from '../definitions/types'; // Импортируем интерфейс
+import { formatNumber } from '../utils/helpers'; // Используем вспомогательную функцию
+
+const App = () => {
+  const [inputPairs, setInputPairs] = useState<InputPairType[]>(INITIAL_PAIRS);
+
+  const addNewPair = () => {
+    setInputPairs((prevPairs) => [...prevPairs, INITIAL_INPUT_PAIR]);
+  };
+
+  const handleChange = (index: number, fieldName: 'price' | 'quantity', value: string) => {
+    let parsedValue = parseFloat(value);
+    if (!isNaN(parsedValue)) {
+      setInputPairs(prevPairs =>
+        prevPairs.map((pair, i) =>
+          i === index ? ({ ...pair, [fieldName]: parsedValue }) : pair
+        )
+      );
+    }
+  };
+
+  const calculateTotal = () => {
+    return inputPairs.reduce((acc, curr) => acc + curr.price * curr.quantity, 0).toFixed(2);
+  };
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+      {inputPairs.map((pair, idx) => (
+        <div key={idx}>
+          Цена №{idx+1}: <input type="number"
+            onChange={(event) => handleChange(idx, 'price', event.target.value)}
+            value={pair.price}
+          />
+            Количество №{idx+1}: <input type="number"
+            onChange={(event) => handleChange(idx, 'quantity', event.target.value)}
+            value={pair.quantity}
+          /><br/>
+        </div>
+      ))}
+      
+      <button onClick={addNewPair}>Добавить новую пару полей</button><br/><br/>
+
+      Итоговая сумма: <b>{formatNumber(calculateTotal())}</b> руб.
+    </div>
+  );
+};
+
+export default App;
+
 export const ChecklistStep = ({
   step,
   idx,
