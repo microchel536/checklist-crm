@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { CheckIcon, ClockIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { NewChecklistStep } from "@/app/lib/definitions";
 import { ChangeEvent } from "react";
