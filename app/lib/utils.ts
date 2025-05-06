@@ -4,7 +4,12 @@ export const formatCurrency = (amount: number) => {
     currency: "RUB",
   });
 };
-
+export const addNewPair = () => {
+    setInputPairs((prevPairs) => [
+      ...prevPairs,
+      { price: 0, kolvo: 0 }
+  ]);
+};
 export const formatDateToLocal = (
   dateStr: string,
   locale: string = "ru-RU"
