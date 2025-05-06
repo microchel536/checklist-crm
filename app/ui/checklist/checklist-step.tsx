@@ -10,9 +10,9 @@ import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
 
 
 
-      interface Item {
-  price: number | string,
-  quantity: number | string
+interface Item {
+  price: string, // теперь точно строка
+  quantity: string // тоже строка
 }
 
 const App = () => {
@@ -20,25 +20,25 @@ const App = () => {
   
   // Добавляем новую пару цена-количество
   const addItem = () => {
-    setItems([...items, {price: '', quantity: ''}]);
+    setItems([...items, {price: '', quantity: ''}]); // добавляем пустые строки
   };
 
   // Удаляем последнюю добавленную пару
   const removeLastItem = () => {
     if(items.length > 0){
-      setItems(items.slice(0, items.length - 1));
+      setItems(items.slice(0, items.length - 1)); // удаляем последний элемент
     }
   };
 
-  // Расчет общей стоимости
+  // Расчёт общей стоимости
   const calculateTotalCost = () => {
     let total = 0;
     
     for(const item of items){
-      const parsedPrice = parseFloat(item.price);
-      const parsedQuantity = parseFloat(item.quantity);
+      const parsedPrice = parseFloat(item.price); // преобразуем в число
+      const parsedQuantity = parseFloat(item.quantity); // преобразуем в число
       
-      if(!isNaN(parsedPrice) && !isNaN(parsedQuantity)){
+      if(!isNaN(parsedPrice) && !isNaN(parsedQuantity)){ // проверяем валидные данные
         total += parsedPrice * parsedQuantity;
       }
     }
@@ -60,9 +60,9 @@ const App = () => {
                  placeholder={`Цена ${index+1}`}
                  value={item.price}
                  onChange={(event) => {
-                   const newItems = [...items];
-                   newItems[index].price = event.target.value;
-                   setItems(newItems);
+                   const newItems = [...items]; // копируем массив
+                   newItems[index].price = event.target.value; // обновляем свойство
+                   setItems(newItems); // устанавливаем новое состояние
                  }}
           />
           
@@ -71,7 +71,7 @@ const App = () => {
                  placeholder={`Количество ${index+1}`}
                  value={item.quantity}
                  onChange={(event) => {
-                   const newItems = [...items];
+                   const newItems = [...items]; // аналогично предыдущему блоку
                    newItems[index].quantity = event.target.value;
                    setItems(newItems);
                  }}
@@ -79,7 +79,7 @@ const App = () => {
         </React.Fragment>
       ))}
 
-      {/* Кнопка расчета суммы */}
+      {/* Кнопка расчёта суммы */}
       <button onClick={() => alert(`Общая сумма: ${calculateTotalCost()}`)}>
         Рассчитать стоимость
       </button>
