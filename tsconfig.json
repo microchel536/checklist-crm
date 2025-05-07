@@ -27,6 +27,7 @@
     }
   },
   "include": [
+    "src"
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
@@ -34,5 +35,6 @@
     "app/lib/placeholder-data.ts",
     "scripts/seed.js"
   ],
+  "references": []
   "exclude": ["node_modules"]
 }
