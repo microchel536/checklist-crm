@@ -1,7 +1,18 @@
+"use client";
+
 import React, { useState } from 'react';
 
+// Интерфейс для пары цена-количество
+interface InputPair {
+  price: string;
+  quantity: string;
+}
+
+// Определим разрешенные поля (только price и quantity)
+type FieldKey = 'price' | 'quantity';
+
 const MultipleInputForm = () => {
-  const [inputs, setInputs] = useState([
+  const [inputs, setInputs] = useState<InputPair[]>([
     { price: '', quantity: '' }, // начальное состояние (одна пара)
   ]);
 
@@ -27,7 +38,8 @@ const MultipleInputForm = () => {
     alert("Итоговая сумма: " + totalSum.toFixed(2));
   };
 
-  const handleInputChange = (idx, field, value) => {
+  // Корректируем сигнатуру функции для ввода значений
+  const handleInputChange = (idx: number, field: FieldKey, value: string) => {
     const updatedRows = [...inputs];
     updatedRows[idx][field] = value;
     setInputs(updatedRows);
@@ -50,9 +62,7 @@ const MultipleInputForm = () => {
                 name={`price-${idx}`}
                 type="number"
                 value={row.price}
-                onChange={(e) =>
-                  handleInputChange(idx, 'price', e.target.value)
-                }
+                onChange={(e) => handleInputChange(idx, 'price', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -70,9 +80,7 @@ const MultipleInputForm = () => {
                 name={`quantity-${idx}`}
                 type="number"
                 value={row.quantity}
-                onChange={(e) =>
-                  handleInputChange(idx, 'quantity', e.target.value)
-                }
+                onChange={(e) => handleInputChange(idx, 'quantity', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
