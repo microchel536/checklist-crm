@@ -30,7 +30,7 @@ export default function StepElementForm({
   };
 
   return (
-    <div className="rounded-md bg-gray-50 p-4 md:p-6">
+    <section className="rounded-md bg-gray-50 py-4 px-4 md:py-6 md:px-6">
       <div className="mb2 flex justify-end">
         <button
           onClick={() => deleteStep(idx)}
@@ -41,7 +41,7 @@ export default function StepElementForm({
           <TrashIcon className="w-5" />
         </button>
       </div>
-    <div>
+    <section>
       <div className="mb-4">
         <label htmlFor="name" className="mb-2 block text-sm font-medium">
           Название этапа
