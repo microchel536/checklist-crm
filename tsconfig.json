@@ -35,6 +35,6 @@
     "app/lib/placeholder-data.ts",
     "scripts/seed.js"
   ],
-  "references": [],
-  "exclude": ["node_modules"]
+  "references": [], 
+  "exclude": ["node_modules"] 
 }
