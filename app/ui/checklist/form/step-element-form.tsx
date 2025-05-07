@@ -5,7 +5,7 @@ import { CheckIcon, ClockIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { NewChecklistStep } from "@/app/lib/definitions";
 import { ChangeEvent } from "react";
 import DatePicker from "react-datepicker";
-import MultipleInputForm from "./app/ui/checklist/form/MultipleInputForm";
+import MultipleInputForm from "@/app/ui/checklist/form/MultipleInputForm";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -30,8 +30,8 @@ export default function StepElementForm({
   };
 
   return (
-    <section className="rounded-md bg-gray-50 py-4 px-4 md:py-6 md:px-6">
-      <div className="mb2 flex justify-end">
+    <div className="rounded-md bg-gray-50 py-4 px-4 md:py-6 md:px-6">
+      <div className="mb-2 flex justify-end">
         <button
           onClick={() => deleteStep(idx)}
           type="button"
@@ -41,7 +41,7 @@ export default function StepElementForm({
           <TrashIcon className="w-5" />
         </button>
       </div>
-    <section>
+
       <div className="mb-4">
         <label htmlFor="name" className="mb-2 block text-sm font-medium">
           Название этапа
@@ -60,7 +60,7 @@ export default function StepElementForm({
       </div>
 
       <div className="mb-4">
-        <label htmlFor="image_url" className="mb-2 block text-sm font-medium">
+        <label htmlFor="description" className="mb-2 block text-sm font-medium">
           Описание
         </label>
         <div className="relative mt-2 rounded-md">
@@ -76,18 +76,7 @@ export default function StepElementForm({
         </div>
       </div>
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const Home = () => {
-    return (
-        <div className="container mx-auto my-8">
-        <MultipleInputForm /> {./app/ui/checklist/form/MultipleInputForm.tsx}
-      </div>
-    );
-  };
-
-  export default Home;      
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+      <MultipleInputForm />
       
       <div className="mb-4">
         <label
@@ -117,8 +106,7 @@ export default function StepElementForm({
         </label>
         <div className="relative mt-2 rounded-md">
           <div className="relative">
-            <input
-              id="final_cost"
+            <input id="final_cost"
               name="final_cost"
               type="number"
               step="1000"
@@ -185,7 +173,7 @@ export default function StepElementForm({
 
         <div>
           <label
-            htmlFor="start_date"
+            htmlFor="end_date"
             className="mb-2 block text-sm font-medium"
           >
             Дата окончания
@@ -202,7 +190,6 @@ export default function StepElementForm({
         </div>
       </div>
 
-      {/* Invoice Status */}
       <fieldset>
         <legend className="mb-2 block text-sm font-medium">Статус этапа</legend>
         <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
@@ -216,7 +203,6 @@ export default function StepElementForm({
                 checked={!step.contractor_accepted}
               />
               <label
-                // htmlFor="pending"
                 className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
               >
                 В работе <ClockIcon className="h-4 w-4" />
@@ -231,7 +217,6 @@ export default function StepElementForm({
                 checked={step.contractor_accepted}
               />
               <label
-                // htmlFor="accepted"
                 className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
               >
                 Принято <CheckIcon className="h-4 w-4" />
