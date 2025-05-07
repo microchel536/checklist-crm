@@ -41,6 +41,7 @@ export default function StepElementForm({
           <TrashIcon className="w-5" />
         </button>
       </div>
+    <div>
       <div className="mb-4">
         <label htmlFor="name" className="mb-2 block text-sm font-medium">
           Название этапа
