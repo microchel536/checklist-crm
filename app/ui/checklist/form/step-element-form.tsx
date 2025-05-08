@@ -83,7 +83,7 @@ export default function StepElementForm({
           htmlFor="planned_cost"
           className="mb-2 block text-sm font-medium"
         >
-          Ожидаемая стоимость
+          Ожидаемая стоимость на основе сметного расчета
         </label>
         <div className="relative mt-2 rounded-md">
           <div className="relative">
