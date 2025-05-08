@@ -107,7 +107,7 @@ const MultipleInputForm = () => {
         onClick={handleCalculate}
         className="mt-4 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md"
       >
-        Посчитать стоимость
+        Посчитать договорную цену
       </button>
     </div>
   );
