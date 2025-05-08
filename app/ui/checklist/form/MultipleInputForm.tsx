@@ -149,4 +149,3 @@ const MultipleInputForm = () => {
 
 export default MultipleInputForm;
 
-export default MultipleInputForm;
