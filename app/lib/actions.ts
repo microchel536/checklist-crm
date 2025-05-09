@@ -1,12 +1,16 @@
-import postgres from "postgres";
+"use server";
+
 import { revalidatePath } from "next/cache";
 import {
   isNewChecklistStep,
   NewChecklist,
   UpdateChecklist,
 } from "./definitions";
+import { sql } from "@vercel/postgres";
 
-const sql = postgres(process.env.POSTGRES_URL!);
+interface ChecklistRow {
+  id: string;
+}
 
 export async function updateChecklistStep(id: string, state: boolean) {
   const contractorAcceptedStatus = state ? true : false;
@@ -30,12 +34,17 @@ export async function updateChecklistStep(id: string, state: boolean) {
 export async function createChecklist(data: NewChecklist) {
   try {
     const { name, steps } = data;
-    const response = await sql`
+    const result = await sql<ChecklistRow>`
         INSERT INTO checklist (name)
         VALUES (${name})
         ON CONFLICT (id) DO NOTHING
         RETURNING id;
       `;
+
+    const checklistId = result.rows[0]?.id;
+    if (!checklistId) {
+      throw new Error("Failed to create checklist");
+    }
 
     await Promise.all(
       steps.map(async (step) => {
@@ -43,9 +52,9 @@ export async function createChecklist(data: NewChecklist) {
             INSERT INTO checklist_steps (name, description, planned_cost, final_cost, customer_accepted, contractor_accepted, image_url, checklist_id, start_date, end_date, docs_url)
             VALUES (${step.name}, ${step.description}, ${step.planned_cost}, ${
           step.final_cost
-        }, ${false}, ${step.contractor_accepted}, ${step.image_url}, ${
-          response[0].id
-        }, ${step.start_date}, ${step.end_date}, ${step.docs_url})
+        }, ${false}, ${step.contractor_accepted}, ${step.image_url}, ${checklistId}, ${
+          step.start_date
+        }, ${step.end_date}, ${step.docs_url})
             ON CONFLICT (id) DO NOTHING;
           `;
       })
@@ -64,10 +73,14 @@ export async function updateChecklist(
   try {
     const { name, id, steps } = data;
 
-    await sql`
-        DELETE FROM checklist_steps
-        WHERE id IN ${sql(deletedSteps)}
-      `;
+    if (deletedSteps.length > 0) {
+      for (const stepId of deletedSteps) {
+        await sql`
+          DELETE FROM checklist_steps
+          WHERE id = ${stepId}
+        `;
+      }
+    }
 
     await sql`
         UPDATE checklist SET name = ${name}
@@ -120,19 +133,10 @@ export async function updateChecklist(
 
 export async function deleteChecklist(id: string) {
   try {
-    await sql`
-    DELETE FROM checklist_steps
-    WHERE checklist_id = ${id}
-  `;
-
-    await sql`
-    DELETE FROM checklist
-    WHERE id = ${id}
-  `;
-  } catch (err) {
-    console.error(err);
-    throw new Error("Failed to deleteChecklist");
+    await sql`DELETE FROM checklists WHERE id = ${id}`;
+    revalidatePath("/checklist");
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to delete checklist.");
   }
-
-  revalidatePath(`/checklist`);
 }
