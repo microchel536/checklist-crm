@@ -2,7 +2,7 @@
 
 import React from "react";
 import { CheckIcon, ClockIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { NewChecklistStep } from "@/app/lib/definitions";
+import { NewChecklistStep, ChecklistStep } from "@/app/lib/definitions";
 import { ChangeEvent } from "react";
 import DatePicker from "react-datepicker";
 import MultipleInputForm from "@/app/ui/checklist/form/MultipleInputForm";
@@ -15,14 +15,13 @@ export default function StepElementForm({
   changeStep,
   idx,
 }: {
-  step: NewChecklistStep;
+  step: ChecklistStep | NewChecklistStep;
   changeStep: <K extends keyof NewChecklistStep>(
     key: K,
     value: NewChecklistStep[K],
     idx: number
   ) => void;
   deleteStep: (idx: number) => void;
-
   idx: number;
 }) {
   const handleValueChanged = (e: ChangeEvent<HTMLInputElement>) => {
@@ -165,7 +164,7 @@ export default function StepElementForm({
             selected={step.start_date ? new Date(step.start_date) : null}
             placeholderText="Выберите дату начала"
             onChange={(date) =>
-              changeStep("start_date", date?.toISOString() || null, idx)
+              changeStep("start_date", date ? date.toISOString() : "", idx)
             }
             className="peer flex-1 block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
           />
@@ -183,7 +182,7 @@ export default function StepElementForm({
             selected={step.end_date ? new Date(step.end_date) : null}
             placeholderText="Выберите дату окончания"
             onChange={(date) =>
-              changeStep("end_date", date?.toISOString() || null, idx)
+              changeStep("end_date", date ? date.toISOString() : "", idx)
             }
             className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
           />
