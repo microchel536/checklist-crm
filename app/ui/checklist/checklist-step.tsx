@@ -1,90 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import clsx from "clsx";
 import Image from "next/image";
-import { formatCurrency } from "@/app/lib/utils";
 import { ChecklistStep } from "@/app/lib/definitions";
 import { updateChecklistStep, updateStepComment } from "@/app/lib/actions";
-
-interface Item {
-  price: string, // теперь точно строка
-  quantity: string // тоже строка
-}
-
-const App = () => {
-  const [items, setItems] = React.useState<Item[]>([]);
-  
-  // Добавляем новую пару цена-количество
-  const addItem = () => {
-    setItems([...items, {price: '', quantity: ''}]); // добавляем пустые строки
-  };
-
-  // Удаляем последнюю добавленную пару
-  const removeLastItem = () => {
-    if(items.length > 0){
-      setItems(items.slice(0, items.length - 1)); // удаляем последний элемент
-    }
-  };
-
-  // Расчёт общей стоимости
-  const calculateTotalCost = () => {
-    let total = 0;
-    
-    for(const item of items){
-      const parsedPrice = parseFloat(item.price); // преобразуем в число
-      const parsedQuantity = parseFloat(item.quantity); // преобразуем в число
-      
-      if(!isNaN(parsedPrice) && !isNaN(parsedQuantity)){ // проверяем валидные данные
-        total += parsedPrice * parsedQuantity;
-      }
-    }
-    
-    return total.toFixed(2); // округляем итоговую сумму до двух знаков после запятой
-  };
-
-  return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
-      {/* Кнопки добавления/удаления пар */}
-      <button onClick={addItem}>Добавить</button>
-      <button disabled={items.length === 0} onClick={removeLastItem}>Удалить</button>
-
-      {/* Поля ввода цены и количества */}
-      {items.map((item, index) => (
-        <React.Fragment key={index}>
-          <input type="number"
-                 step="any"
-                 placeholder={`Цена ${index+1}`}
-                 value={item.price}
-                 onChange={(event) => {
-                   const newItems = [...items]; // копируем массив
-                   newItems[index].price = event.target.value; // обновляем свойство
-                   setItems(newItems); // устанавливаем новое состояние
-                 }}
-          />
-          
-          <input type="number"
-                 step="any"
-                 placeholder={`Количество ${index+1}`}
-                 value={item.quantity}
-                 onChange={(event) => {
-                   const newItems = [...items]; // аналогично предыдущему блоку
-                   newItems[index].quantity = event.target.value;
-                   setItems(newItems);
-                 }}
-          />
-        </React.Fragment>
-      ))}
-
-      {/* Кнопка расчёта суммы */}
-      <button onClick={() => alert(`Общая сумма: ${calculateTotalCost()}`)}>
-        Рассчитать стоимость
-      </button>
-    </div>
-  );
-};
-
-export default App;
 
 interface ChecklistStepProps {
   step: ChecklistStep;
@@ -147,11 +66,14 @@ export function ChecklistStepComponent({ step }: ChecklistStepProps) {
       {step.image_url && (
         <div className="mb-2">
           <p className="text-sm text-gray-500 mb-1">Изображение:</p>
-          <img
-            src={step.image_url}
-            alt={step.name}
-            className="max-w-full h-auto rounded-lg"
-          />
+          <div className="relative w-full h-48">
+            <Image
+              src={step.image_url}
+              alt={step.name}
+              fill
+              className="object-contain rounded-lg"
+            />
+          </div>
         </div>
       )}
       {step.docs_url && (
