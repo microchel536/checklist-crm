@@ -19,7 +19,7 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
     setComment(e.target.value);
   };
 
-  const handleCommentBlur = async () => {
+  const handleSaveComment = async () => {
     try {
       await updateStepComment(step.id, comment);
       // Обновляем состояние step после успешного сохранения
@@ -141,7 +141,7 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
                 Отмена
               </button>
               <button
-                onClick={handleCommentBlur}
+                onClick={handleSaveComment}
                 className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
               >
                 Сохранить
