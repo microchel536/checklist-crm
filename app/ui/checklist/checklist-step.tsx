@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { ChecklistStep } from "@/app/lib/definitions";
-import { updateChecklistStep, updateStepComment } from "@/app/lib/actions";
+import { updateStepComment } from "@/app/lib/actions";
 
 interface ChecklistStepProps {
   step: ChecklistStep;

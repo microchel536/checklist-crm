@@ -1,5 +1,4 @@
 import React from "react";
-import { ChecklistStep } from "@/app/lib/definitions";
 import { fetchChecklistById } from "@/app/lib/data";
 import { updateChecklistStep } from "@/app/lib/actions";
 import { ChecklistStepComponent } from "@/app/ui/checklist/checklist-step";
