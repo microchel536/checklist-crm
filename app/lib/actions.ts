@@ -133,7 +133,18 @@ export async function updateChecklist(
 
 export async function deleteChecklist(id: string) {
   try {
-    await sql`DELETE FROM checklists WHERE id = ${id}`;
+    // Сначала удаляем все шаги чеклиста
+    await sql`
+      DELETE FROM checklist_steps
+      WHERE checklist_id = ${id}
+    `;
+
+    // Затем удаляем сам чеклист
+    await sql`
+      DELETE FROM checklist
+      WHERE id = ${id}
+    `;
+
     revalidatePath("/checklist");
   } catch (error) {
     console.error("Database Error:", error);
