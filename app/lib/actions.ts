@@ -49,12 +49,17 @@ export async function createChecklist(data: NewChecklist) {
     await Promise.all(
       steps.map(async (step) => {
         return sql`
-            INSERT INTO checklist_steps (name, description, planned_cost, final_cost, customer_accepted, contractor_accepted, image_url, checklist_id, start_date, end_date, docs_url)
-            VALUES (${step.name}, ${step.description}, ${step.planned_cost}, ${
-          step.final_cost
-        }, ${false}, ${step.contractor_accepted}, ${step.image_url}, ${checklistId}, ${
-          step.start_date
-        }, ${step.end_date}, ${step.docs_url})
+            INSERT INTO checklist_steps (
+              name, description, planned_cost, final_cost, 
+              customer_accepted, contractor_accepted, image_url, 
+              checklist_id, start_date, end_date, docs_url, comment
+            )
+            VALUES (
+              ${step.name}, ${step.description}, ${step.planned_cost}, 
+              ${step.final_cost}, ${false}, ${step.contractor_accepted}, 
+              ${step.image_url}, ${checklistId}, ${step.start_date}, 
+              ${step.end_date}, ${step.docs_url}, ${step.comment || null}
+            )
             ON CONFLICT (id) DO NOTHING;
           `;
       })
@@ -93,12 +98,17 @@ export async function updateChecklist(
     await Promise.all(
       stepsToCreate.map(async (step) => {
         return sql`
-            INSERT INTO checklist_steps (name, description, planned_cost, final_cost, customer_accepted, contractor_accepted, image_url, checklist_id, start_date, end_date, docs_url)
-            VALUES (${step.name}, ${step.description}, ${step.planned_cost}, ${
-          step.final_cost
-        }, ${false}, ${step.contractor_accepted}, ${step.image_url}, ${id}, ${
-          step.start_date
-        }, ${step.end_date}, ${step.docs_url})
+            INSERT INTO checklist_steps (
+              name, description, planned_cost, final_cost, 
+              customer_accepted, contractor_accepted, image_url, 
+              checklist_id, start_date, end_date, docs_url, comment
+            )
+            VALUES (
+              ${step.name}, ${step.description}, ${step.planned_cost}, 
+              ${step.final_cost}, ${false}, ${step.contractor_accepted}, 
+              ${step.image_url}, ${id}, ${step.start_date}, 
+              ${step.end_date}, ${step.docs_url}, ${step.comment || null}
+            )
             ON CONFLICT (id) DO NOTHING;
           `;
       })
@@ -117,7 +127,8 @@ export async function updateChecklist(
             image_url = ${step.image_url},
             start_date = ${step.start_date},
             end_date = ${step.end_date},
-            docs_url = ${step.docs_url}
+            docs_url = ${step.docs_url},
+            comment = ${step.comment || null}
           WHERE id = ${step.id};
           `;
       })
@@ -127,8 +138,8 @@ export async function updateChecklist(
     throw new Error("Failed to Update Checklist step");
   }
 
-  // revalidatePath(`/checklist/${data.id}/edit`);
-  // revalidatePath(`/checklist/${data.id}`);
+  revalidatePath(`/checklist/${data.id}/edit`);
+  revalidatePath(`/checklist/${data.id}`);
 }
 
 export async function deleteChecklist(id: string) {
@@ -149,5 +160,19 @@ export async function deleteChecklist(id: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to delete checklist.");
+  }
+}
+
+export async function updateStepComment(id: string, comment: string) {
+  try {
+    await sql`
+      UPDATE checklist_steps
+      SET comment = ${comment}
+      WHERE id = ${id}
+    `;
+    revalidatePath("/checklist");
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to update step comment.");
   }
 }

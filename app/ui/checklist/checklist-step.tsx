@@ -1,14 +1,11 @@
 "use client";
 
-import React from "react"; 
+import React, { useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
 import { formatCurrency } from "@/app/lib/utils";
-import { ChecklistStep as ChecklistStepType } from "@/app//lib/definitions";
-
-
-
-
+import { ChecklistStep } from "@/app/lib/definitions";
+import { updateChecklistStep, updateStepComment } from "@/app/lib/actions";
 
 interface Item {
   price: string, // теперь точно строка
@@ -89,114 +86,107 @@ const App = () => {
 
 export default App;
 
+interface ChecklistStepProps {
+  step: ChecklistStep;
+}
 
+export function ChecklistStepComponent({ step }: ChecklistStepProps) {
+  const [comment, setComment] = useState(step.comment || "");
+  const [isEditing, setIsEditing] = useState(false);
 
+  const handleCommentChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
 
+  const handleCommentBlur = async () => {
+    setIsEditing(false);
+    await updateStepComment(step.id, comment);
+  };
 
-
-
-export const ChecklistStep = ({
-  step,
-  idx,
-  updateChecklistStep,
-}: {
-  step: ChecklistStepType;
-  idx: number;
-  updateChecklistStep: (id: string, state: boolean) => void;
-}) => {
   return (
-    <div
-      className={clsx(
-        "rounded-lg bg-blue-600 text-white p-7 flex justify-between gap-3",
-        {
-          "opacity-70":
-            !step.contractor_accepted ||
-            (step.contractor_accepted && step.customer_accepted),
-        }
-      )}
-    >
-      <div className="flex flex-1 flex-col gap-3 justify-between">
-        <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-bold">
-            {idx}. {step.name}
-          </h2>
-          <p className="text-sm">
-            Планируемые затраты: <b>{formatCurrency(step.planned_cost)}</b>
-          </p>
-          <p className="text-sm">{step.description}</p>
-          {step.final_cost && (
-            <p className="text-sm">
-              Итоговые затраты: <b>{formatCurrency(step.final_cost)}</b>
-            </p>
-          )}
-          {(step.start_date || step.end_date) && (
-            <p className="text-sm">
-              Даты проведения:{" "}
-              {step.start_date
-                ? new Date(step.start_date).toLocaleDateString()
-                : "-"}
-              /
-              {step.end_date
-                ? new Date(step.end_date).toLocaleDateString()
-                : "-"}
-            </p>
-          )}
-          {step.docs_url && (
-            <a
-              className="text-sm underline"
-              target="_blank"
-              href={step.docs_url}
-            >
-              Просмотреть приложенный документ.
-            </a>
-          )}
-        </div>
-        <div className="flex gap-4">
-          <button
-            disabled
-            className={clsx("py-1 px-2 rounded opacity-50", {
-              "bg-gray-600 opacity-50": !step.contractor_accepted,
-              "bg-green-500": step.contractor_accepted,
-            })}
-          >
-            {step.contractor_accepted
-              ? "Исполнитель ✅"
-              : "Ожидается подтвеждение исполнителем... ❌"}
-          </button>
-          {step.contractor_accepted && (
-            <div className="flex gap-1">
-              <button
-                onClick={() => updateChecklistStep(step.id, true)}
-                disabled={Boolean(step.customer_accepted)}
-                className="bg-green-500 py-1 px-2 rounded disabled:opacity-50"
-              >
-                Принять ✅
-              </button>
-              {!step.customer_accepted && (
-                <button
-                  onClick={() => updateChecklistStep(step.id, false)}
-                  className="bg-green-500 py-1 px-2 rounded disabled:opacity-50"
-                >
-                  Отправить на доработку ❌
-                </button>
-              )}
-            </div>
-          )}
+    <div className="bg-white p-4 rounded-lg shadow mb-4">
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="text-lg font-medium">{step.name}</h3>
+        <div className="flex items-center space-x-2">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={step.contractor_accepted}
+              onChange={(e) => updateChecklistStep(step.id, e.target.checked)}
+              className="form-checkbox h-5 w-5 text-blue-600"
+            />
+            <span className="text-sm">Подтверждено</span>
+          </label>
         </div>
       </div>
-      {step.image_url ? (
-        <Image
-          className="rounded-lg flex-1 max-h-200"
-          alt={step.name}
-          src={step.image_url}
-          width={200}
-          height={64}
-        />
-      ) : (
-        <div className="flex w-64 h-64 items-center justify-center rounded-lg bg-gray-400 flex-1">
-          <p className="text-md">Фото не добавлено</p>
+      <p className="text-gray-600 mb-2">{step.description}</p>
+      <div className="grid grid-cols-2 gap-4 mb-2">
+        <div>
+          <p className="text-sm text-gray-500">Плановая стоимость:</p>
+          <p className="font-medium">{step.planned_cost} ₽</p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Фактическая стоимость:</p>
+          <p className="font-medium">{step.final_cost} ₽</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4 mb-2">
+        <div>
+          <p className="text-sm text-gray-500">Дата начала:</p>
+          <p className="font-medium">
+            {step.start_date ? new Date(step.start_date).toLocaleDateString() : "Не указана"}
+          </p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Дата окончания:</p>
+          <p className="font-medium">
+            {step.end_date ? new Date(step.end_date).toLocaleDateString() : "Не указана"}
+          </p>
+        </div>
+      </div>
+      {step.image_url && (
+        <div className="mb-2">
+          <p className="text-sm text-gray-500 mb-1">Изображение:</p>
+          <img
+            src={step.image_url}
+            alt={step.name}
+            className="max-w-full h-auto rounded-lg"
+          />
         </div>
       )}
+      {step.docs_url && (
+        <div className="mb-2">
+          <p className="text-sm text-gray-500 mb-1">Документы:</p>
+          <a
+            href={step.docs_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Открыть документы
+          </a>
+        </div>
+      )}
+      <div className="mt-4">
+        <p className="text-sm text-gray-500 mb-1">Комментарий:</p>
+        {isEditing ? (
+          <textarea
+            value={comment}
+            onChange={handleCommentChange}
+            onBlur={handleCommentBlur}
+            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            rows={3}
+            placeholder="Введите комментарий..."
+          />
+        ) : (
+          <div
+            onClick={() => setIsEditing(true)}
+            className="w-full p-2 border rounded-lg cursor-pointer hover:bg-gray-50"
+          >
+            {comment || "Добавить комментарий..."}
+          </div>
+        )}
+      </div>
     </div>
   );
-};
+}

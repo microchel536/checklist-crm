@@ -22,26 +22,32 @@ export type ChecklistStep = {
   contractor_accepted: boolean;
   customer_accepted: boolean | null;
   image_url: string | null;
+  comment: string | null;
 };
 
 export type ChecklistCard = Checklist & {
   steps: ChecklistStep[];
 };
 
-export type NewChecklistStep = Omit<
-  ChecklistStep,
-  "created_at" | "id" | "customer_accepted" | "checklist_id"
->;
+export type NewChecklistStep = {
+  name: string;
+  description: string;
+  planned_cost: number;
+  final_cost: number;
+  contractor_accepted: boolean;
+  image_url: string;
+  start_date: string;
+  end_date: string;
+  docs_url: string;
+  comment?: string;
+};
 
 export type NewChecklist = {
   name: string;
   steps: NewChecklistStep[];
 };
 
-export type UpdateChecklistStep = Omit<
-  ChecklistStep,
-  "created_at" | "customer_accepted" | "checklist_id"
->;
+export type UpdateChecklistStep = ChecklistStep;
 
 export type UpdateChecklist = Checklist & {
   steps: Array<UpdateChecklistStep | NewChecklistStep>;
