@@ -1,7 +1,8 @@
 import React from "react";
-import { ChecklistStep } from "@/app/ui/checklist/checklist-step";
+import { ChecklistStep } from "@/app/lib/definitions";
 import { fetchChecklistById } from "@/app/lib/data";
 import { updateChecklistStep } from "@/app/lib/actions";
+import { ChecklistStepComponent } from "@/app/ui/checklist/checklist-step";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -20,7 +21,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       <div className="flex flex-col gap-5">
         {checklist.steps.map((step, idx) => {
           return (
-            <ChecklistStep
+            <ChecklistStepComponent
               updateChecklistStep={handleUpdateChecklistStep}
               idx={idx + 1}
               step={step}

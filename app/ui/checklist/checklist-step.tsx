@@ -7,9 +7,11 @@ import { updateChecklistStep, updateStepComment } from "@/app/lib/actions";
 
 interface ChecklistStepProps {
   step: ChecklistStep;
+  idx: number;
+  updateChecklistStep: (id: string, state: boolean) => Promise<void>;
 }
 
-export function ChecklistStepComponent({ step }: ChecklistStepProps) {
+export function ChecklistStepComponent({ step, idx, updateChecklistStep }: ChecklistStepProps) {
   const [comment, setComment] = useState(step.comment || "");
   const [isEditing, setIsEditing] = useState(false);
 
@@ -19,13 +21,21 @@ export function ChecklistStepComponent({ step }: ChecklistStepProps) {
 
   const handleCommentBlur = async () => {
     setIsEditing(false);
-    await updateStepComment(step.id, comment);
+    try {
+      await updateStepComment(step.id, comment);
+      // Обновляем состояние step после успешного сохранения
+      step.comment = comment;
+    } catch (error) {
+      console.error("Failed to update comment:", error);
+      // Восстанавливаем предыдущее значение в случае ошибки
+      setComment(step.comment || "");
+    }
   };
 
   return (
     <div className="bg-white p-4 rounded-lg shadow mb-4">
       <div className="flex justify-between items-start mb-2">
-        <h3 className="text-lg font-medium">{step.name}</h3>
+        <h3 className="text-lg font-medium">{idx}. {step.name}</h3>
         <div className="flex items-center space-x-2">
           <label className="flex items-center space-x-2">
             <input

@@ -170,7 +170,10 @@ export async function updateStepComment(id: string, comment: string) {
       SET comment = ${comment}
       WHERE id = ${id}
     `;
+    // Обновляем все возможные пути, где может отображаться комментарий
     revalidatePath("/checklist");
+    revalidatePath("/checklist/[id]");
+    revalidatePath("/checklist/[id]/edit");
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to update step comment.");

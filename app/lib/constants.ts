@@ -5,12 +5,13 @@ export const INITIAL_STEP: NewChecklistStep = {
   name: "Мой этап",
   description: "",
   planned_cost: 0,
-  final_cost: null,
+  final_cost: 0,
   contractor_accepted: false,
-  start_date: null,
-  end_date: null,
-  docs_url: null,
-  image_url: null,
+  start_date: "",
+  end_date: "",
+  docs_url: "",
+  image_url: "",
+  comment: ""
 };
 
 
