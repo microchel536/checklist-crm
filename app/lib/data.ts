@@ -31,7 +31,7 @@ export async function fetchChecklistById(
   }
 }
 
-export async function fetchChecklistList(): Promise<Checklist[]> {
+export async function fetchChecklistList(): Promise<ChecklistCard[]> {
   try {
     const checklists = await sql<Checklist[]>`
       SELECT 
@@ -40,7 +40,21 @@ export async function fetchChecklistList(): Promise<Checklist[]> {
       FROM checklist
     `;
 
-    return checklists;
+    const checklistCards = await Promise.all(
+      checklists.map(async (checklist) => {
+        const steps = await sql<ChecklistStep[]>`
+          SELECT * FROM checklist_steps
+          WHERE checklist_id = ${checklist.id}
+          ORDER BY created_at ASC;
+        `;
+        return {
+          ...checklist,
+          steps,
+        };
+      })
+    );
+
+    return checklistCards;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch checklist.");
