@@ -20,15 +20,25 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
   };
 
   const handleCommentBlur = async () => {
-    setIsEditing(false);
     try {
       await updateStepComment(step.id, comment);
       // Обновляем состояние step после успешного сохранения
       step.comment = comment;
+      setIsEditing(false);
     } catch (error) {
       console.error("Failed to update comment:", error);
       // Восстанавливаем предыдущее значение в случае ошибки
       setComment(step.comment || "");
+    }
+  };
+
+  const handleDeleteComment = async () => {
+    try {
+      await updateStepComment(step.id, "");
+      step.comment = "";
+      setComment("");
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
     }
   };
 
@@ -100,16 +110,44 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
         </div>
       )}
       <div className="mt-4">
-        <p className="text-sm text-gray-500 mb-1">Комментарий:</p>
+        <div className="flex justify-between items-center mb-1">
+          <p className="text-sm text-gray-500">Комментарий:</p>
+          {!isEditing && step.comment && (
+            <button
+              onClick={handleDeleteComment}
+              className="text-sm text-red-500 hover:text-red-700"
+            >
+              Удалить комментарий
+            </button>
+          )}
+        </div>
         {isEditing ? (
-          <textarea
-            value={comment}
-            onChange={handleCommentChange}
-            onBlur={handleCommentBlur}
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            rows={3}
-            placeholder="Введите комментарий..."
-          />
+          <div className="space-y-2">
+            <textarea
+              value={comment}
+              onChange={handleCommentChange}
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              rows={3}
+              placeholder="Введите комментарий..."
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => {
+                  setIsEditing(false);
+                  setComment(step.comment || "");
+                }}
+                className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800"
+              >
+                Отмена
+              </button>
+              <button
+                onClick={handleCommentBlur}
+                className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Сохранить
+              </button>
+            </div>
+          </div>
         ) : (
           <div
             onClick={() => setIsEditing(true)}
