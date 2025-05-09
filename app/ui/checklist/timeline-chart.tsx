@@ -86,7 +86,7 @@ export default function TimelineChart({ checklists }: TimelineChartProps) {
               />
               <Legend />
               <Line 
-                type="monotone" 
+                type="natural" 
                 dataKey="startDate" 
                 name="Дата начала" 
                 stroke="#3B82F6" 
@@ -95,7 +95,7 @@ export default function TimelineChart({ checklists }: TimelineChartProps) {
                 activeDot={{ r: 6 }}
               />
               <Line 
-                type="monotone" 
+                type="natural" 
                 dataKey="endDate" 
                 name="Дата окончания" 
                 stroke="#10B981" 
