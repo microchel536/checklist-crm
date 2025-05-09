@@ -9,6 +9,7 @@ import {
   DeleteButton,
 } from "@/app/ui/checklist/buttons";
 import { ChecklistCard, ChecklistStep } from "@/app/lib/definitions";
+import TimelineChart from "@/app/ui/checklist/timeline-chart";
 
 export default async function Page() {
   const checklistList = await fetchChecklistList();
@@ -69,6 +70,7 @@ export default async function Page() {
           </div>
         </div>
       </div>
+      <TimelineChart checklists={checklistList} />
     </div>
   );
 }
