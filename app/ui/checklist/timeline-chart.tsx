@@ -11,7 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { ChecklistCard, ChecklistStep } from "@/app/lib/definitions";
+import { ChecklistCard } from "@/app/lib/definitions";
 
 interface TimelineChartProps {
   checklists: ChecklistCard[];
