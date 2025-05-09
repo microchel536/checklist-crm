@@ -1,6 +1,6 @@
 "use server";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { fetchChecklistList } from "@/app/lib/data";
 import {
@@ -10,6 +10,9 @@ import {
 } from "@/app/ui/checklist/buttons";
 import { ChecklistCard, ChecklistStep } from "@/app/lib/definitions";
 import TimelineChart from "@/app/ui/checklist/timeline-chart";
+import Notifications from "@/app/ui/checklist/notifications";
+import { lusitana } from "@/app/ui/fonts";
+import ChecklistList from "@/app/ui/checklist/checklist-list";
 
 export default async function Page() {
   const checklistList = await fetchChecklistList();
@@ -27,27 +30,15 @@ export default async function Page() {
       stepAcc + (step.planned_cost || 0), 0), 0);
 
   return (
-    <div>
+    <main>
       <div className="flex justify-between">
-        <h1 className={"mb-8 text-xl md:text-2xl"}>Чеклисты</h1>
+        <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>Чеклисты</h1>
         <CreateButton />
       </div>
-      <div className="flex flex-col gap-5">
-        {checklistList.map((checklist: ChecklistCard, idx: number) => (
-          <div
-            className="flex justify-between p-2 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-            key={checklist.id}
-          >
-            <Link href={`/checklist/${checklist.id}`}>
-              {idx + 1}. {checklist.name}
-            </Link>
-
-            <div className="flex gap-1">
-              <UpdateButton id={checklist.id} />
-              <DeleteButton id={checklist.id} />
-            </div>
-          </div>
-        ))}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Suspense fallback={<div>Loading...</div>}>
+          <ChecklistList checklists={checklistList} />
+        </Suspense>
       </div>
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4">Аналитика</h2>
@@ -71,6 +62,7 @@ export default async function Page() {
         </div>
       </div>
       <TimelineChart checklists={checklistList} />
-    </div>
+      <Notifications checklists={checklistList} />
+    </main>
   );
 }
