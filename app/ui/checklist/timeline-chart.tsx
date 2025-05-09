@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -22,12 +22,19 @@ export default function TimelineChart({ checklists }: TimelineChartProps) {
   const selectedChecklist = checklists[selectedChecklistIndex];
 
   // Подготовка данных для графика
-  const chartData = selectedChecklist.steps.map((step) => ({
+  const chartData = selectedChecklist.steps.map((step, index) => ({
     name: step.name,
-    startDate: step.start_date ? new Date(step.start_date).toLocaleDateString() : "Не начато",
-    endDate: step.end_date ? new Date(step.end_date).toLocaleDateString() : "Не завершено",
+    startDate: step.start_date ? new Date(step.start_date).getTime() : null,
+    endDate: step.end_date ? new Date(step.end_date).getTime() : null,
     status: step.customer_accepted && step.contractor_accepted ? "Завершено" : "В процессе",
+    index: index + 1,
   }));
+
+  // Форматирование даты для отображения
+  const formatDate = (timestamp: number | null) => {
+    if (!timestamp) return "Не указано";
+    return new Date(timestamp).toLocaleDateString();
+  };
 
   return (
     <div className="mt-8">
@@ -52,7 +59,7 @@ export default function TimelineChart({ checklists }: TimelineChartProps) {
       <div className="bg-white p-4 rounded-lg shadow">
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart
+            <LineChart
               data={chartData}
               margin={{
                 top: 20,
@@ -62,13 +69,41 @@ export default function TimelineChart({ checklists }: TimelineChartProps) {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-              <YAxis />
-              <Tooltip />
+              <XAxis 
+                dataKey="name" 
+                angle={-45} 
+                textAnchor="end" 
+                height={100}
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis 
+                tickFormatter={(value) => formatDate(value)}
+                domain={['auto', 'auto']}
+              />
+              <Tooltip 
+                formatter={(value: number) => formatDate(value)}
+                labelFormatter={(label) => `Шаг: ${label}`}
+              />
               <Legend />
-              <Bar dataKey="startDate" name="Дата начала" fill="#3B82F6" />
-              <Bar dataKey="endDate" name="Дата окончания" fill="#10B981" />
-            </BarChart>
+              <Line 
+                type="monotone" 
+                dataKey="startDate" 
+                name="Дата начала" 
+                stroke="#3B82F6" 
+                strokeWidth={2}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="endDate" 
+                name="Дата окончания" 
+                stroke="#10B981" 
+                strokeWidth={2}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
