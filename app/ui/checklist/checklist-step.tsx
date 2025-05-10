@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { ChecklistStep } from "@/app/lib/definitions";
-import { updateStepComment } from "@/app/lib/actions";
+import { updateStepComment, updateChecklistStep } from "@/app/lib/actions";
 
 interface ChecklistStepProps {
   step: ChecklistStep;
@@ -18,7 +18,7 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCommentChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
     setError(null);
   };
@@ -30,13 +30,11 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
       console.log('Saving comment for step:', localStep.id, 'comment:', comment);
       await updateStepComment(localStep.id, comment);
       console.log('Comment saved successfully');
-      // Обновляем локальное состояние
       setLocalStep(prev => ({ ...prev, comment }));
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update comment:", error);
       setError(error instanceof Error ? error.message : "Не удалось сохранить комментарий. Попробуйте еще раз.");
-      // Восстанавливаем предыдущее значение в случае ошибки
       setComment(localStep.comment || "");
     } finally {
       setIsSaving(false);
@@ -60,6 +58,15 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
     }
   };
 
+  const handleCheckboxChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      await updateChecklistStep(localStep.id, e.target.checked);
+      setLocalStep(prev => ({ ...prev, contractor_accepted: e.target.checked }));
+    } catch (error) {
+      console.error("Failed to update step status:", error);
+    }
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow mb-4">
       <div className="flex justify-between items-start mb-2">
@@ -69,7 +76,7 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
             <input
               type="checkbox"
               checked={localStep.contractor_accepted}
-              onChange={(e) => updateChecklistStep(localStep.id, e.target.checked)}
+              onChange={handleCheckboxChange}
               className="form-checkbox h-5 w-5 text-blue-600"
             />
             <span className="text-sm">Подтверждено</span>

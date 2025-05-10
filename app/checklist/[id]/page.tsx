@@ -9,11 +9,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   const checklist = await fetchChecklistById(checklistId);
 
-  const handleUpdateChecklistStep = async (id: string, state: boolean) => {
-    "use server";
-    await updateChecklistStep(id, state);
-  };
-
   return (
     <div>
       <h1 className={"mb-8 text-xl md:text-2xl"}>{checklist.name}</h1>
@@ -21,7 +16,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         {checklist.steps.map((step, idx) => {
           return (
             <ChecklistStepComponent
-              updateChecklistStep={handleUpdateChecklistStep}
+              updateChecklistStep={updateChecklistStep}
               idx={idx + 1}
               step={step}
               key={step.id}
