@@ -27,13 +27,15 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
     setIsSaving(true);
     setError(null);
     try {
+      console.log('Saving comment for step:', localStep.id, 'comment:', comment);
       await updateStepComment(localStep.id, comment);
+      console.log('Comment saved successfully');
       // Обновляем локальное состояние
       setLocalStep(prev => ({ ...prev, comment }));
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update comment:", error);
-      setError("Не удалось сохранить комментарий. Попробуйте еще раз.");
+      setError(error instanceof Error ? error.message : "Не удалось сохранить комментарий. Попробуйте еще раз.");
       // Восстанавливаем предыдущее значение в случае ошибки
       setComment(localStep.comment || "");
     } finally {
@@ -45,12 +47,14 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
     setIsSaving(true);
     setError(null);
     try {
+      console.log('Deleting comment for step:', localStep.id);
       await updateStepComment(localStep.id, "");
+      console.log('Comment deleted successfully');
       setLocalStep(prev => ({ ...prev, comment: "" }));
       setComment("");
     } catch (error) {
       console.error("Failed to delete comment:", error);
-      setError("Не удалось удалить комментарий. Попробуйте еще раз.");
+      setError(error instanceof Error ? error.message : "Не удалось удалить комментарий. Попробуйте еще раз.");
     } finally {
       setIsSaving(false);
     }

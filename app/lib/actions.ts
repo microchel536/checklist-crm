@@ -165,17 +165,28 @@ export async function deleteChecklist(id: string) {
 
 export async function updateStepComment(id: string, comment: string) {
   try {
-    await sql`
+    console.log('Updating comment for step:', id, 'with comment:', comment);
+    
+    const result = await sql`
       UPDATE checklist_steps
       SET comment = ${comment}
       WHERE id = ${id}
+      RETURNING id, comment;
     `;
+
+    if (result.rowCount === 0) {
+      console.error('No step found with id:', id);
+      throw new Error('Step not found');
+    }
+
+    console.log('Successfully updated comment:', result.rows[0]);
+    
     // Обновляем все возможные пути, где может отображаться комментарий
     revalidatePath("/checklist");
     revalidatePath("/checklist/[id]");
     revalidatePath("/checklist/[id]/edit");
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to update step comment.");
+    throw new Error(`Failed to update step comment: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
