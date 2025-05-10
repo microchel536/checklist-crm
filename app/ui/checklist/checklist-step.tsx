@@ -15,12 +15,17 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
   const [comment, setComment] = useState(step.comment || "");
   const [isEditing, setIsEditing] = useState(false);
   const [localStep, setLocalStep] = useState(step);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCommentChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
+    setError(null);
   };
 
   const handleSaveComment = async () => {
+    setIsSaving(true);
+    setError(null);
     try {
       await updateStepComment(localStep.id, comment);
       // Обновляем локальное состояние
@@ -28,18 +33,26 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update comment:", error);
+      setError("Не удалось сохранить комментарий. Попробуйте еще раз.");
       // Восстанавливаем предыдущее значение в случае ошибки
       setComment(localStep.comment || "");
+    } finally {
+      setIsSaving(false);
     }
   };
 
   const handleDeleteComment = async () => {
+    setIsSaving(true);
+    setError(null);
     try {
       await updateStepComment(localStep.id, "");
       setLocalStep(prev => ({ ...prev, comment: "" }));
       setComment("");
     } catch (error) {
       console.error("Failed to delete comment:", error);
+      setError("Не удалось удалить комментарий. Попробуйте еще раз.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -116,12 +129,16 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
           {!isEditing && localStep.comment && (
             <button
               onClick={handleDeleteComment}
-              className="text-sm text-red-500 hover:text-red-700"
+              disabled={isSaving}
+              className="text-sm text-red-500 hover:text-red-700 disabled:opacity-50"
             >
-              Удалить комментарий
+              {isSaving ? "Удаление..." : "Удалить комментарий"}
             </button>
           )}
         </div>
+        {error && (
+          <p className="text-sm text-red-500 mb-2">{error}</p>
+        )}
         {isEditing ? (
           <div className="space-y-2">
             <textarea
@@ -130,29 +147,33 @@ export function ChecklistStepComponent({ step, idx, updateChecklistStep }: Check
               className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               rows={3}
               placeholder="Введите комментарий..."
+              disabled={isSaving}
             />
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => {
                   setIsEditing(false);
                   setComment(localStep.comment || "");
+                  setError(null);
                 }}
-                className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800"
+                disabled={isSaving}
+                className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 disabled:opacity-50"
               >
                 Отмена
               </button>
               <button
                 onClick={handleSaveComment}
-                className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+                disabled={isSaving}
+                className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
               >
-                Сохранить
+                {isSaving ? "Сохранение..." : "Сохранить"}
               </button>
             </div>
           </div>
         ) : (
           <div
-            onClick={() => setIsEditing(true)}
-            className="w-full p-2 border rounded-lg cursor-pointer hover:bg-gray-50"
+            onClick={() => !isSaving && setIsEditing(true)}
+            className={`w-full p-2 border rounded-lg ${!isSaving ? 'cursor-pointer hover:bg-gray-50' : ''}`}
           >
             {localStep.comment || "Добавить комментарий..."}
           </div>
