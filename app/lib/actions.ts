@@ -183,8 +183,8 @@ export async function updateStepComment(id: string, comment: string) {
     
     // Обновляем все возможные пути, где может отображаться комментарий
     revalidatePath("/checklist");
-    revalidatePath("/checklist/[id]");
-    revalidatePath("/checklist/[id]/edit");
+    revalidatePath(`/checklist/${id}`);
+    revalidatePath(`/checklist/${id}/edit`);
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error(`Failed to update step comment: ${error instanceof Error ? error.message : 'Unknown error'}`);
