@@ -1,7 +1,5 @@
-import postgres from "postgres";
+import { sql } from "@vercel/postgres";
 import { checklistPlaceholder } from "../lib/placeholder-data";
-
-const sql = postgres(process.env.POSTGRES_URL!);
 
 async function seedChecklist() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -39,31 +37,26 @@ async function seedChecklist() {
   await sql`DELETE FROM checklist_steps;`;
   await sql`DELETE FROM checklist;`;
 
-  await Promise.all(
-    checklistPlaceholder.map(async (checklist) => {
+  for (const checklist of checklistPlaceholder) {
+    await sql`
+      INSERT INTO checklist (id, name)
+      VALUES (${checklist.id}, ${checklist.name})
+      ON CONFLICT (id) DO NOTHING;
+    `;
+
+    for (const step of checklist.steps) {
       await sql`
-        INSERT INTO checklist (id, name)
-        VALUES (${checklist.id}, ${checklist.name})
+        INSERT INTO checklist_steps (id, name, description, planned_cost, final_cost, customer_accepted, contractor_accepted, image_url, checklist_id, comment)
+        VALUES (${step.id}, ${step.name}, ${step.description}, ${step.planned_cost}, ${step.final_cost}, ${step.customer_accepted}, ${step.contractor_accepted}, ${step.image_url}, ${step.checklist_id}, ${step.comment || null})
         ON CONFLICT (id) DO NOTHING;
       `;
-
-      await Promise.all(
-        checklist.steps.map(async (step) => {
-          return sql`
-            INSERT INTO checklist_steps (id, name, description, planned_cost, final_cost, customer_accepted, contractor_accepted, image_url, checklist_id, comment)
-            VALUES (${step.id}, ${step.name}, ${step.description}, ${step.planned_cost}, ${step.final_cost}, ${step.customer_accepted}, ${step.contractor_accepted}, ${step.image_url}, ${step.checklist_id}, ${step.comment || null})
-            ON CONFLICT (id) DO NOTHING;
-          `;
-        })
-      );
-    })
-  );
+    }
+  }
 }
 
 export async function GET() {
   try {
-    await sql.begin(() => [seedChecklist()]);
-
+    await seedChecklist();
     return Response.json({ message: "Database seeded successfully" });
   } catch (error) {
     return Response.json({ error }, { status: 500 });

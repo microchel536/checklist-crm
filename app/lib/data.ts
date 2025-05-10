@@ -1,13 +1,11 @@
-import postgres from "postgres";
+import { sql } from "@vercel/postgres";
 import { Checklist, ChecklistCard, ChecklistStep } from "./definitions";
-
-const sql = postgres(process.env.POSTGRES_URL!);
 
 export async function fetchChecklistById(
   checklistId: string
 ): Promise<ChecklistCard> {
   try {
-    const checklist = await sql<Checklist[]>`
+    const checklistResult = await sql<Checklist>`
       SELECT 
         id, 
         name 
@@ -15,15 +13,19 @@ export async function fetchChecklistById(
       WHERE id = ${checklistId};
     `;
 
-    const checklistSteps = await sql<ChecklistStep[]>`
+    const checklistSteps = await sql<ChecklistStep>`
       SELECT * FROM checklist_steps
       WHERE checklist_id = ${checklistId}
       ORDER BY created_at ASC;
     `;
 
+    if (!checklistResult.rows[0]) {
+      throw new Error("Checklist not found");
+    }
+
     return {
-      ...checklist[0],
-      steps: checklistSteps,
+      ...checklistResult.rows[0],
+      steps: checklistSteps.rows,
     };
   } catch (error) {
     console.error("Database Error:", error);
@@ -33,7 +35,7 @@ export async function fetchChecklistById(
 
 export async function fetchChecklistList(): Promise<ChecklistCard[]> {
   try {
-    const checklists = await sql<Checklist[]>`
+    const checklistsResult = await sql<Checklist>`
       SELECT 
         id, 
         name 
@@ -41,15 +43,15 @@ export async function fetchChecklistList(): Promise<ChecklistCard[]> {
     `;
 
     const checklistCards = await Promise.all(
-      checklists.map(async (checklist) => {
-        const steps = await sql<ChecklistStep[]>`
+      checklistsResult.rows.map(async (checklist) => {
+        const stepsResult = await sql<ChecklistStep>`
           SELECT * FROM checklist_steps
           WHERE checklist_id = ${checklist.id}
           ORDER BY created_at ASC;
         `;
         return {
           ...checklist,
-          steps,
+          steps: stepsResult.rows,
         };
       })
     );
