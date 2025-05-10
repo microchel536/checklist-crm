@@ -11,18 +11,19 @@ export type Checklist = {
 
 export type ChecklistStep = {
   id: string;
-  checklist_id: string;
   name: string;
   description: string;
   planned_cost: number;
   final_cost: number | null;
-  start_date: string | null;
-  end_date: string | null;
-  docs_url: string | null;
   contractor_accepted: boolean;
   customer_accepted: boolean | null;
   image_url: string | null;
+  docs_url: string | null;
+  checklist_id: string;
+  start_date: string | null;
+  end_date: string | null;
   comment: string | null;
+  created_at: string;
 };
 
 export type ChecklistCard = Checklist & {
@@ -30,16 +31,19 @@ export type ChecklistCard = Checklist & {
 };
 
 export type NewChecklistStep = {
+  id: string;
   name: string;
   description: string;
   planned_cost: number;
-  final_cost: number;
+  final_cost: number | null;
   contractor_accepted: boolean;
-  image_url: string;
-  start_date: string;
-  end_date: string;
-  docs_url: string;
-  comment?: string;
+  customer_accepted: boolean | null;
+  image_url: string | null;
+  docs_url: string | null;
+  checklist_id: string;
+  start_date: string | null;
+  end_date: string | null;
+  comment: string | null;
 };
 
 export type NewChecklist = {
@@ -56,7 +60,6 @@ export type UpdateChecklist = Checklist & {
 export function isNewChecklistStep(
   step: UpdateChecklistStep | NewChecklistStep
 ): step is UpdateChecklistStep {
-  // @ts-expect-error ID is not in property
   if (step?.id) return true;
   return false;
 }

@@ -29,6 +29,7 @@ async function seedChecklist() {
       checklist_id UUID NOT NULL,
       start_date VARCHAR(255),
       end_date VARCHAR(255),
+      comment TEXT,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (checklist_id) REFERENCES checklist(id)
     );
@@ -49,8 +50,8 @@ async function seedChecklist() {
       await Promise.all(
         checklist.steps.map(async (step) => {
           return sql`
-            INSERT INTO checklist_steps (id, name, description, planned_cost, final_cost, customer_accepted, contractor_accepted, image_url, checklist_id)
-            VALUES (${step.id}, ${step.name}, ${step.description}, ${step.planned_cost}, ${step.final_cost}, ${step.customer_accepted}, ${step.contractor_accepted}, ${step.image_url}, ${step.checklist_id})
+            INSERT INTO checklist_steps (id, name, description, planned_cost, final_cost, customer_accepted, contractor_accepted, image_url, checklist_id, comment)
+            VALUES (${step.id}, ${step.name}, ${step.description}, ${step.planned_cost}, ${step.final_cost}, ${step.customer_accepted}, ${step.contractor_accepted}, ${step.image_url}, ${step.checklist_id}, ${step.comment || null})
             ON CONFLICT (id) DO NOTHING;
           `;
         })

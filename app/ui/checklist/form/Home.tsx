@@ -6,6 +6,7 @@ import { NewChecklistStep } from "@/app/lib/definitions";
 
 // Создаем фиктивный шаг
 const mockStep: NewChecklistStep = {
+    id: "mock-id",
     name: "Название шага",
     description: "Описание шага",
     planned_cost: 0,
@@ -13,8 +14,11 @@ const mockStep: NewChecklistStep = {
     image_url: "",
     docs_url: "",
     contractor_accepted: false,
+    customer_accepted: null,
+    checklist_id: "mock-checklist-id",
     start_date: "",
-    end_date: ""
+    end_date: "",
+    comment: null,
   };
   
   // Замыкающие функции (без параметров)

@@ -17,6 +17,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/49e8d62c-fb0a-430a-b242-f2559ee02b34.jpg",
         checklist_id: "6f947c9e-77a9-45cf-ac19-32987330bd75",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "f0f7d252-109b-4eb8-bb70-22318737a105",
@@ -30,6 +31,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/4cfeb1a4-17b3-47eb-994e-208cd1051c2a.jpg",
         checklist_id: "6f947c9e-77a9-45cf-ac19-32987330bd75",
         created_at: new Date().toISOString(),
+        comment: null,
       },
     ],
   },
@@ -49,6 +51,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/dc59fa7f-5d4a-470c-94b9-8b1b25a4d2f7.jpg",
         checklist_id: "6f947c9e-77a9-45cf-ac19-32987330bd74",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "8954add3-073d-49cb-93e5-9c1b6d0abdbc",
@@ -62,6 +65,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/c05c0028-a5dd-4eb4-9618-9a1e77963369.jpg",
         checklist_id: "6f947c9e-77a9-45cf-ac19-32987330bd74",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "57f23d3d-3f46-41c9-9881-6cec71f8800f",
@@ -75,6 +79,7 @@ export const checklistPlaceholder = [
         image_url: null,
         checklist_id: "6f947c9e-77a9-45cf-ac19-32987330bd74",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "9f06130c-cd25-4dde-a64a-06f91a236404",
@@ -88,6 +93,7 @@ export const checklistPlaceholder = [
         image_url: null,
         checklist_id: "6f947c9e-77a9-45cf-ac19-32987330bd74",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "85d8f0f3-16a6-4cd9-aa51-0aac5ea6c858",
@@ -100,6 +106,7 @@ export const checklistPlaceholder = [
         image_url: null,
         checklist_id: "6f947c9e-77a9-45cf-ac19-32987330bd74",
         created_at: new Date().toISOString(),
+        comment: null,
       },
     ],
   },
@@ -119,6 +126,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/4bf32038-074e-472d-9897-ba4b911338c2.jpg",
         checklist_id: "6f7e398c-67e2-45e9-82b2-f4270d9fe011",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "eba555f5-adc1-4633-961a-84b78fb02398",
@@ -132,6 +140,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/45bd2280-eb51-44f8-8ef5-856eed25b6ab.jpg",
         checklist_id: "6f7e398c-67e2-45e9-82b2-f4270d9fe011",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "a1c5b5d3-5013-4407-acab-41ced3383d5b",
@@ -145,6 +154,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/c2cc3806-c296-491e-b075-aa1ba15ed432.jpg",
         checklist_id: "6f7e398c-67e2-45e9-82b2-f4270d9fe011",
         created_at: new Date().toISOString(),
+        comment: null,
       },
       {
         id: "9379f0ad-1b05-45a3-989c-b770fe78cd6e",
@@ -158,6 +168,7 @@ export const checklistPlaceholder = [
         image_url: "/checklist_assets/b69310a2-c4b6-4ee0-86f1-133567d1ac28.jpg",
         checklist_id: "6f7e398c-67e2-45e9-82b2-f4270d9fe011",
         created_at: new Date().toISOString(),
+        comment: null,
       },
     ],
   },
